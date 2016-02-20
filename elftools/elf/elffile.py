@@ -14,6 +14,7 @@ from .structs import ELFStructs
 from .sections import (
         Section, StringTableSection, SymbolTableSection,
         SUNWSyminfoTableSection, NullSection)
+from .attributes import AttributesSection
 from .dynamic import DynamicSection, DynamicSegment
 from .relocation import RelocationSection, RelocationHandler
 from .gnuversions import (
@@ -274,6 +275,9 @@ class ELFFile(object):
             return self._make_gnu_verdef_section(section_header, name)
         elif sectype == 'SHT_GNU_versym':
             return self._make_gnu_versym_section(section_header, name)
+        elif sectype == 'SHT_ARM_ATTRIBUTES':
+            return AttributesSection(
+                section_header, name, self.stream, self)
         elif sectype in ('SHT_REL', 'SHT_RELA'):
             return RelocationSection(
                 section_header, name, self.stream, self)
